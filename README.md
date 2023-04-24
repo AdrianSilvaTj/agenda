@@ -1,2 +1,2 @@
-# agenda
-Agenda de personas. Proyecto con Rest Framework
+# agendadj
+proyecto agenda para curso profesional django
