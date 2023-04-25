@@ -3,7 +3,7 @@ from model_utils.models import TimeStampedModel
 #
 from django.db import models
 
-
+from .managers import MeetingManager
 #
 class Hobby(TimeStampedModel):
     hobby = models.CharField('Pasa Tiempo', max_length=50)
@@ -52,6 +52,7 @@ class Meeting(TimeStampedModel):
     date = models.DateField()
     time = models.TimeField()
     asunto  = models.CharField('Asunto', max_length=100)
+    objects = MeetingManager()
     
     class Meta:
         verbose_name = 'Reunion'

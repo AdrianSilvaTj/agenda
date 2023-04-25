@@ -6,8 +6,12 @@ from rest_framework.generics import (
     UpdateAPIView,RetrieveUpdateAPIView
 )
 
-from .models import Person
-from .serializers import PersonSerializer, PersonSimpleSerializer
+from .models import Meeting, Person
+from .serializers import (
+    PersonSerializer, PersonSimpleSerializer, PersonSerializer2,
+    MeetingSerializer, PersonSerializer3, MeetingSerializer2,
+    MeetingSerializerLink, PaginationSerializer, MeetingCountSerializer
+)
 
 
 class PersonListView(ListView):
@@ -20,8 +24,8 @@ class PersonListView(ListView):
 class PruebaListView(TemplateView):
     template_name= 'persona/lista.html'
     
-# ********* API VIEWS *****************
-    
+# ********* API VIEWS *********************************************************
+# ***** Person *********************************************
 class PersonListApiView(ListAPIView):
     """ Api Mostrar lista de todas las personas"""
     serializer_class = PersonSerializer
@@ -64,7 +68,46 @@ class PersonRetrieveUpdateApiView(RetrieveUpdateAPIView):
 
 class PersonListApiView2(ListAPIView):
     """ Vista para interactuar con serializadores """
-    serializer_class = PersonSimpleSerializer
+    serializer_class = PersonSerializer3
     
     def get_queryset(self):
         return Person.objects.all()
+    
+class PersonPagListApiView(ListAPIView):
+    """ Api Mostrar lista de todas las personas con paginación """
+    serializer_class = PersonSerializer
+    pagination_class = PaginationSerializer
+    
+    def get_queryset(self):
+        return Person.objects.all()
+
+# ***** Meeting *********************************************
+
+class MeetingListApiView(ListAPIView):
+    """ Vista para interactuar con serializadores """
+    serializer_class = MeetingSerializer
+    
+    def get_queryset(self):
+        return Meeting.objects.all()
+    
+class MeetingListApiView2(ListAPIView):
+    """ Vista con Serializador que contiene un campo con una operación  """
+    serializer_class = MeetingSerializer2
+    
+    def get_queryset(self):
+        return Meeting.objects.all()
+    
+class MeetingListLinkApiView(ListAPIView):
+    """ Vista con Serializador que contiene un campo con una operación  """
+    serializer_class = MeetingSerializerLink
+    
+    def get_queryset(self):
+        return Meeting.objects.all()
+
+class MeetingByJobApiView(ListAPIView):
+    """ Vista para contar reuniones por trabajos """
+    serializer_class = MeetingCountSerializer
+    
+    def get_queryset(self):
+        return Meeting.objects.meetings_job_count()
+        #return Meeting.objects.meetings_by_asunto()
